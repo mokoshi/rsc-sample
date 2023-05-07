@@ -26,7 +26,6 @@ const maxDailyTweets = 10;
 let tweetCount = 0;
 
 export async function addTweet(tweet: string): Promise<Result> {
-  "use server";
   if (tweetCount > maxDailyTweets) {
     return {
       success: false,
