@@ -1,7 +1,7 @@
 "use server";
 
 import { sql } from "@vercel/postgres";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 
 export type Tweet = {
   id: string;
@@ -42,7 +42,8 @@ export async function addTweet(tweet: string): Promise<Result> {
 
   tweetCount++;
 
-  revalidatePath("/");
+  // revalidatePath("/");
+  revalidateTag("tweets");
   return { success: true };
 }
 
@@ -52,6 +53,7 @@ export async function likeTweet(id: string) {
   } catch (error) {
     console.error(error);
   } finally {
-    revalidatePath("/");
+    // revalidatePath("/");
+    revalidateTag(`tweets:${id}`);
   }
 }

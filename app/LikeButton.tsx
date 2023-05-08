@@ -1,6 +1,6 @@
 "use client";
 
-import { experimental_useOptimistic as useOptimistic } from "react";
+import { useTransition } from "react";
 import { likeTweet, Tweet } from "./actions";
 
 type Props = {
@@ -8,18 +8,15 @@ type Props = {
 };
 
 export default function LikeButton({ tweet }: Props) {
-  const [optimisticLikes, addOptimisticLikes] = useOptimistic(
-    tweet.likes,
-    (state, newLikes: number) => state + newLikes
-  );
+  let [isPending, startTransition] = useTransition();
+
   return (
     <button
       onClick={async () => {
-        addOptimisticLikes(1);
-        await likeTweet(tweet.id);
+        startTransition(() => likeTweet(tweet.id));
       }}
     >
-      {optimisticLikes} Likes
+      {tweet.likes} Likes {isPending && "(Pending)"}
     </button>
   );
 }
