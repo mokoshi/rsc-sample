@@ -25,6 +25,7 @@ export default async function Home() {
       <ul>
         {tweets.map((tweet) => (
           <li key={tweet.id}>
+            {/* @ts-expect-error Server Component */}
             <TweetBox id={tweet.id} />
           </li>
         ))}
